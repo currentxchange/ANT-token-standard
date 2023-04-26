@@ -1,0 +1,7 @@
+project: token
+version: 1.0.0
+apps:
+  - name: token
+    lang: CXX
+    compile_options: ""
+    link_options: ""
