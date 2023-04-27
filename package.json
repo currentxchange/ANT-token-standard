@@ -1,0 +1,29 @@
+{
+  "name": "ant-token-standard",
+  "version": "1.0.0",
+  "description": "Basic + Empowered Token Standards for Antelope Blockchains (WAX, Telos, EOS, UX, Proton)",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/currentxchange/ANT-token-standard.git"
+  },
+  "keywords": [
+    "antelope",
+    "eosio",
+    "token",
+    "standard",
+    "wax",
+    "eos",
+    "telos",
+    "ux"
+  ],
+  "author": "Original eosio.token authors + Antelope + contributors + Douglas Butner & Current X Change LLC",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/currentxchange/ANT-token-standard/issues"
+  },
+  "homepage": "https://github.com/currentxchange/ANT-token-standard#readme"
+}
