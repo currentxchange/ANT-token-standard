@@ -148,7 +148,8 @@ void token::open( const name& owner, const symbol& symbol, const name& ram_payer
 
 void token::close( const name& owner, const symbol& symbol )
 {
-   require_auth( owner );
+    check(has_auth(owner) || has_auth(get_self()),
+          "missing required authority: must have authorization from former token holder, token contract, or token issuer");
    accounts acnts( get_self(), owner.value );
    auto it = acnts.find( symbol.code().raw() );
    check( it != acnts.end(), "Balance row already deleted or never existed. Action won't have any effect." );
