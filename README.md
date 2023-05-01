@@ -86,12 +86,12 @@ typedef eosio::multi_index< "stat"_n, currency_stats > stats;
 1. Compile the contract:
 Using EOSIO cdt
 ```bash
-eosio-cpp -I include -o token.wasm src/token.cpp --abigen
+eosio-cpp -l eosio -o src/token/deploy/token.wasm src/token/token.cpp --abigen --contract token
 ```
 
 Using Antelope cdt 
 ```bash
-cdt-cpp -I include -o atoken.wasm src/token.cpp --abigen
+cdt-cpp -l eosio -o src/token/deploy/token.wasm src/token/token.cpp --abigen --contract token
 ```
 
 
