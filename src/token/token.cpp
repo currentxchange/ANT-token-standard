@@ -6,7 +6,7 @@ using namespace eosio;
 void token::create( const name&   issuer,
                     const asset&  maximum_supply )
 {
-    require_auth( get_self() );
+    require_auth( get_self());
 
     auto sym = maximum_supply.symbol;
     check( maximum_supply.is_valid(), "invalid supply");
