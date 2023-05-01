@@ -5,7 +5,7 @@
 
 #include <string>
 
-/// Copied from antelopeio/reference-contracts
+// --- Copied from antelopeio/reference-contracts --- //
 
 class [[eosio::contract]] token : public eosio::contract {
    public:
