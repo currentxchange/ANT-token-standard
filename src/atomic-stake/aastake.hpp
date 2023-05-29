@@ -26,8 +26,6 @@ public:
 
     // ------------ admin actions ------------
 
-    // freeze/unfreeze the contract
-    ACTION setfrozen(const bool& is_frozen);
 
     // set the contract config
     ACTION setconfig(const uint32_t& min_claim_period, const uint32_t& unstake_period);

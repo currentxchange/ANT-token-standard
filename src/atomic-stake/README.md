@@ -32,7 +32,7 @@ To use Atomic Stake, you will need:
 
 3. Compile the smart contract using EOSIO.CDT:
    ```
-   eosio-cpp -l eosio -o src/token/deploy/aastake.wasm src/atomic-stake/aastake.cpp --abigen --contract aastake
+   eosio-cpp -l eosio -o src/atomic-stake/deploy/aastake.wasm src/atomic-stake/aastake.cpp --abigen --contract aastake
    ```
 
 4. Deploy the contract to the blockchain:
