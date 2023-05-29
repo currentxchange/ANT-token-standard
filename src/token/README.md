@@ -20,7 +20,7 @@ This standard, by default, provides features such as token transfers, many token
 - Ability to delete rows has been given to contract in addition to the token holder, allowing your contract to free up RAM for users.
 
 ## Basic Token for EOS, WAX, Telos, etc
-- Find the slightly-upgraded token as src/token.cpp and include/token.hpp
+- Find the slightly-upgraded token contract as src/token/token.cpp and src/token/token.hpp
 
 
 # Token Standard Overview
