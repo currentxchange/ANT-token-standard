@@ -110,8 +110,6 @@ private:
 
     TABLE config
     {
-        // is the contract frozen/stopped for maintenance/emergency
-        bool is_frozen = 0;
         // the name of the token contract
         name token_contract = name("eosio.token");
         // the name of the token symbol
@@ -145,13 +143,10 @@ private:
         config_t conf_tbl(get_self(), get_self().value);
 
         // check if a config exists
-        check(conf_tbl.exists(), "smart contract is not initialized yet");
+        check(conf_tbl.exists(), "The contract is not initialized yet");
 
         // get  current config
         const auto& conf = conf_tbl.get();
-
-        // check if contract isn't frozen
-        check(!conf.is_frozen, "smart contract is currently frozen");
 
         return conf;
     }
