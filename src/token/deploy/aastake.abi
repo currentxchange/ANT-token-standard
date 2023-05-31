@@ -50,10 +50,6 @@
             "base": "",
             "fields": [
                 {
-                    "name": "is_frozen",
-                    "type": "bool"
-                },
-                {
                     "name": "token_contract",
                     "type": "name"
                 },
