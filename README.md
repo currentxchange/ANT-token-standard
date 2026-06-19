@@ -2,26 +2,24 @@
 
 The ANT (Antelope) Token Standards is an unofficial token contract that seeks to replace the EOSIO.token contract on WAX, Telos, EOS + UX blockchains, and anyone else using [Antelope](https://github.com/AntelopeIO). I've nicknamed the collection of standards ANT as it's the beginning of Antelope and after ANTioquía, Colombia, and ants. 
 
-This standard, by default, provides features such as token transfers, many tokens per contract, token symbols unique to the contract, control over the RAM payer, the ability to close accounts (delete rows) with zero balance (new), and, of course, the process for creating and issuing tokens. The base implementation is split into a .cpp file (token.cpp) and a header file (token.hpp), and additional standards follow the same format with different file names.
+This standard, by default, provides features such as token transfers, many tokens per contract, token symbols unique to the contract, control over the RAM payer, the ability for any holder to burn their own tokens, the ability to close accounts (delete rows) with zero balance, and the process for creating and issuing tokens. The base implementation is split into a `.cpp` file (`token.cpp`) and a header file (`token.hpp`), and additional standards follow the same format with different file names.
 
-> Here's more [information](https://developers.eos.io/welcome/v2.2/tutorials/eosio_token/#token) about the eosio.token standard this is based on. 
-
-This standard, by default, provides features such as token transfers, many tokens per contract, token symbols unique to the contract, control over the RAM payer, the ability to close accounts (delete rows) with zero balance, and, of course, the process for creating and issuing tokens. The base implementation is split into a .cpp file (token.cpp) and a header file (token.hpp), and additional standards follow the same format with different file names.
-
-> Here's more [information](https://developers.eos.io/welcome/v2.2/tutorials/eosio_token/#token) about the eosio.token standard this is based on. 
+> Here's more [information](https://developers.eos.io/welcome/v2.2/tutorials/eosio_token/#token) about the eosio.token standard this is based on.
 
 ## Features
 
 - Fork of eosio.token contract
-- Control over freeing RAM given to contract   
-    **This is a change from the eosio.token standard**, previously only token owner with blank balance could clear their row. This feature was added so that a contract has the ability to maintain a more accurate list of holders. 
+- `burn` action lets any token holder destroy their own balance and reduce supply
+- Control over freeing RAM given to contract
+    **This is a change from the eosio.token standard**, previously only token owner with blank balance could clear their row. This feature was added so that a contract has the ability to maintain a more accurate list of holders.
 - Contract + owner can close accounts with zero balance, freeing up RAM
-    - Be aware this means the token may dissapear from the wallet in user interfaces + next transfer will require RAM to be paid again
+    - Be aware this means the token may disappear from the wallet in user interfaces; the next transfer will require RAM to be paid again
 - More explicit error messages for easier debugging
 - Differences in the authorization process for creating and issuing tokens
 
 ## Changes from eosio.token
 - Ability to delete rows has been given to contract in addition to the token holder, allowing your contract to free up RAM for users.
+- `burn` action added so any account can reduce supply by destroying its own tokens (`retire` remains issuer-only).
 
 ## Basic Token for EOS, WAX, Telos, etc
 - Find the slightly-upgraded token contract as src/token/token.cpp and src/token/token.hpp
@@ -33,7 +31,8 @@ This standard, by default, provides features such as token transfers, many token
 
 - `create`: Creates a new token with a specified issuer and maximum supply
 - `issue`: Issues a specified quantity of tokens to the issuer account with an optional memo
-- `retire`: Retires a specified quantity of tokens, reducing the supply with an optional memo
+- `retire`: Issuer retires tokens from the issuer balance, reducing supply (eosio.token compatible)
+- `burn`: Any account burns tokens from its own balance, reducing supply; closes the balance row if it reaches zero
 - `transfer`: Transfers a specified quantity of tokens from one account to another with an optional memo
 - `open`: Opens a balance row for an account with zero balance for a specified symbol, with the specified RAM payer
 - `close`: Closes a balance row for an account with zero balance for a specified symbol
@@ -108,7 +107,7 @@ cdt-cpp -l eosio -o src/token/deploy/token.wasm src/token/token.cpp --abigen --c
 cleos set contract <your_account_name> <path_to_contract_directory> token.wasm token.abi
 ```
 
-Replace `<your_account_name>` with your EOSIO account name and `<path_to_contract_directory>` with the path to the directory containing the compiled contract files (`ant_token.wasm` and `ant_token.abi`).
+Replace `<your_account_name>` with your EOSIO account name and `<path_to_contract_directory>` with the path to the directory containing the compiled contract files (`token.wasm` and `token.abi`), for example `src/token/deploy`.
 
 3. Create a new token:
 
@@ -126,7 +125,15 @@ cleos push action <your_account_name> issue '["<issuer_account_name>", "1000.000
 
 Replace `<your_account_name>` with your EOSIO account name and `<issuer_account_name>` with the issuer account name for the ANT token.
 
-Now, the ANT token is ready to use. You can perform actions like `transfer`, `retire`, `open`, and `close` as needed.
+5. Burn tokens from a holder account:
+
+```bash
+cleos push action <your_account_name> burn '["<holder_account_name>", "10.0000 ANT", "Burn tokens"]' -p <holder_account_name>
+```
+
+Replace `<holder_account_name>` with the account burning its own tokens.
+
+Now, the ANT token is ready to use. You can perform actions like `transfer`, `retire`, `burn`, `open`, and `close` as needed.
 
 ## License
 

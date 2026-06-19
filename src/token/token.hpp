@@ -37,7 +37,8 @@ class [[eosio::contract]] token : public eosio::contract {
 
       /**
        * The opposite for create action, if all validations succeed,
-       * it debits the statstable.supply amount.
+       * it debits the statstable.supply amount from the issuer balance.
+       * Requires issuer authorization.
        *
        * @param quantity - the quantity of tokens to retire,
        * @param memo - the memo string to accompany the transaction.
@@ -45,6 +46,14 @@ class [[eosio::contract]] token : public eosio::contract {
       [[eosio::action]]
       void retire( const eosio::asset& quantity, const std::string& memo );
 
+      /**
+       * Burns `quantity` tokens from `username` balance and reduces supply.
+       * If the balance reaches zero, the account row is removed.
+       *
+       * @param username - the account burning its own tokens,
+       * @param quantity - the quantity of tokens to burn,
+       * @param memo - the memo string to accompany the transaction.
+       */
       [[eosio::action]]
       void burn( const eosio::name& username, const eosio::asset& quantity, const std::string& memo );
 
