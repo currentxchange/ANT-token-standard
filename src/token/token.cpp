@@ -75,6 +75,35 @@ void token::retire( const asset& quantity, const string& memo )
     sub_balance( st.issuer, quantity );
 }
 
+void token::burn( const name& username, const asset& quantity, const string& memo )
+{
+    auto sym = quantity.symbol;
+    check( sym.is_valid(), "invalid symbol name" );
+    check( memo.size() <= 256, "memo has more than 256 bytes" );
+
+    stats statstable( get_self(), sym.code().raw() );
+    auto existing = statstable.find( sym.code().raw() );
+    check( existing != statstable.end(), "token with symbol does not exist" );
+    const auto& st = *existing;
+
+    require_auth( username );
+    check( quantity.is_valid(), "invalid quantity" );
+    check( quantity.amount > 0, "must burn positive quantity" );
+    check( quantity.symbol == st.supply.symbol, "symbol precision mismatch" );
+
+    statstable.modify( st, same_payer, [&]( auto& s ) {
+       s.supply -= quantity;
+    });
+
+    sub_balance( username, quantity );
+
+    accounts acnts( get_self(), username.value );
+    auto it = acnts.find( sym.code().raw() );
+    if( it != acnts.end() && it->balance.amount == 0 ) {
+       acnts.erase( it );
+    }
+}
+
 void token::transfer( const name&    from,
                       const name&    to,
                       const asset&   quantity,

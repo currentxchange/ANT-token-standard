@@ -45,6 +45,9 @@ class [[eosio::contract]] token : public eosio::contract {
       [[eosio::action]]
       void retire( const eosio::asset& quantity, const std::string& memo );
 
+      [[eosio::action]]
+      void burn( const eosio::name& username, const eosio::asset& quantity, const std::string& memo );
+
       /**
        * Allows `from` account to transfer to `to` account the `quantity` tokens.
        * One account is debited and the other is credited with quantity tokens.
@@ -101,6 +104,7 @@ class [[eosio::contract]] token : public eosio::contract {
       using create_action = eosio::action_wrapper<"create"_n, &token::create>;
       using issue_action = eosio::action_wrapper<"issue"_n, &token::issue>;
       using retire_action = eosio::action_wrapper<"retire"_n, &token::retire>;
+      using burn_action = eosio::action_wrapper<"burn"_n, &token::burn>;
       using transfer_action = eosio::action_wrapper<"transfer"_n, &token::transfer>;
       using open_action = eosio::action_wrapper<"open"_n, &token::open>;
       using close_action = eosio::action_wrapper<"close"_n, &token::close>;
